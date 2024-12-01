@@ -4,7 +4,7 @@ My attempt at aoc 24.
 
 ## Tasks
 
-- [ ] day 01
+- [x] day 01
 - [ ] day 02
 - [ ] day 03
 - [ ] day 04
