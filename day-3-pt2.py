@@ -10,12 +10,9 @@ def read_input(filename: str) -> str:
 
 def solve(line):
     matches = re.findall(r"(?<=mul)\(\d+,\d+\)|don't\(\)|do\(\)", line)
-    print(matches)
 
     result = 0
-
     state = True
-
     for match in matches:
         if match == "don't()":
             state = False
@@ -29,8 +26,8 @@ def solve(line):
 
 def main():
     # lines = read_input("sample-part1.txt")
-    lines = read_input("input.txt")
-    result = sum(map(solve, lines))
+    line = read_input("input.txt")
+    result = solve(line)
     print(result)
 
 
