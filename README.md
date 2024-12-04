@@ -7,7 +7,7 @@ My attempt at aoc 24.
 - [x] day 01
 - [x] day 02
 - [x] day 03
-- [ ] day 04
+- [x] day 04
 - [ ] day 05
 - [ ] day 06
 - [ ] day 07
