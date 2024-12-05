@@ -32,7 +32,7 @@ def solve(xs: list[int]) -> bool:
 
 
 def main():
-    # lines = read_input("sample-part1.txt")
+    # lines = read_input("sample.txt")
     lines = read_input("input.txt")
     result = sum(map(solve, lines))
     print(result)

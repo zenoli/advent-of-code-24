@@ -25,7 +25,7 @@ def solve(line):
 
 
 def main():
-    # lines = read_input("sample-part1.txt")
+    # lines = read_input("sample.txt")
     line = read_input("input.txt")
     result = solve(line)
     print(result)

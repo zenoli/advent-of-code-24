@@ -18,7 +18,7 @@ def check(x, y, grid: Grid) -> bool:
 
 
 def main():
-    # grid = read_input("sample-part1.txt")
+    # grid = read_input("sample.txt")
     grid = read_input("input.txt")
     x_size = len(grid)
     y_size = len(grid[0])

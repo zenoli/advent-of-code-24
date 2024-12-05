@@ -33,7 +33,7 @@ def extract_word(locations: Iterable[Location], grid: Grid) -> str:
 
 
 def main():
-    grid = read_input("sample-part1.txt")
+    grid = read_input("sample.txt")
     grid = read_input("input.txt")
     x_size = len(grid)
     y_size = len(grid[0])

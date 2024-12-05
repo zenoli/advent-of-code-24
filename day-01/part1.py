@@ -5,7 +5,7 @@ def read_input(filename: str) -> tuple[list[int], ...]:
 
 
 def main():
-    # l1, l2 = read_input("sample-part1.txt")
+    # l1, l2 = read_input("sample.txt")
     l1, l2 = read_input("input.txt")
     result = sum(map(lambda x: abs(x[0] - x[1]), list(zip(sorted(l1), sorted(l2)))))
     print(result)

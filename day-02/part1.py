@@ -26,7 +26,7 @@ def is_safe(diffs: list[int]) -> bool:
 
 
 def main():
-    # lines = read_input("sample-part1.txt")
+    # lines = read_input("sample.txt")
     lines = read_input("input.txt")
     result = sum(map(is_safe, map(diffs, lines)))
     print(result)

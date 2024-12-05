@@ -8,7 +8,7 @@ def read_input(filename: str) -> tuple[list[int], ...]:
 
 
 def main():
-    # l1, l2 = read_input("sample-part1.txt")
+    # l1, l2 = read_input("sample.txt")
     l1, l2 = read_input("input.txt")
     counts = Counter(l2)
     result = sum(x * counts[x] for x in l1)
