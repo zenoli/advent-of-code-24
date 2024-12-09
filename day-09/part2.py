@@ -77,6 +77,7 @@ def log(files: list[File]):
 
 def main():
     # disk_map = read_input("sample.txt")
+    # answer: 6431472344710
     disk_map = read_input("input.txt")
 
     files = parse_files(disk_map)
@@ -85,7 +86,7 @@ def main():
     N = len(files)
     for i, f in enumerate(reversed(files)):
         print(f"[{i}/{N}]")
-        updated_files = move(copy(updated_files), f.copy)
+        updated_files = move(updated_files, f.copy)
     log(updated_files)
     print(sum(f.checksum for f in updated_files))
 
