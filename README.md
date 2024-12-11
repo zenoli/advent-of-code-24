@@ -13,8 +13,8 @@ My attempt at aoc 24.
 - [x] day 07
 - [x] day 08
 - [x] day 09
-- [ ] day 10
-- [ ] day 11
+- [x] day 10
+- [x] day 11
 - [ ] day 12
 - [ ] day 13
 - [ ] day 14
