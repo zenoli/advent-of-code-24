@@ -108,6 +108,12 @@ def main():
                     corners[x + 1][y] = True
                 if counts[bot_right] == 1:
                     corners[x + 1][y + 1] = True
+                if counts[top_left] == 2 and top_left == bot_right:
+                    corners[x][y] = True
+                    corners[x + 1][y + 1] = True
+                if counts[top_right] == 2 and top_right == bot_left:
+                    corners[x][y + 1] = True
+                    corners[x + 1][y] = True
             else:  # len(counts) == 4:
                 # AB
                 # CD
@@ -163,14 +169,15 @@ def main():
                     else:
                         if not is_visited(neighbor):
                             next_positions.add(neighbor)
+        print(f"{get(start)}: {area} * {corners} = {area*corners}")
         return area * corners
 
     def debug_corners():
         for line in corners:
             print("".join(["o" if c else "." for c in line]))
 
-    grid = read_input("sample5.txt")
-    # grid = read_input("input.txt")
+    # grid = read_input("sample5.txt")
+    grid = read_input("input.txt")
     double_grid = get_double_grid(grid)
 
     x_size = len(grid)
@@ -196,6 +203,8 @@ def main():
         if not is_visited(pos)
     )
 
+    # 809191
+    # 815788
     print(result)
 
 
