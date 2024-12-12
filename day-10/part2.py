@@ -37,8 +37,11 @@ def main():
     x_size = len(grid)
     y_size = len(grid[0])
 
-    def get(pos: Position) -> int:
-        return int(grid[pos[0]][pos[1]])
+    def get(pos: Position) -> str:
+        if not in_bounds(pos):
+            return "#"
+        else:
+            return grid[pos[0]][pos[1]]
 
     def in_bounds(pos: Position) -> bool:
         return 0 <= pos[0] < x_size and 0 <= pos[1] < y_size
