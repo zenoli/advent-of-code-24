@@ -10,6 +10,9 @@ LEFT = (0, -1)
 RIGHT = (0, 1)
 
 
+directions = {UP: 0, DOWN: 1, LEFT: 2, RIGHT: 3}
+
+
 def add(a: Position, b: Position) -> Position:
     return a[0] + b[0], a[1] + b[1]
 
@@ -42,37 +45,53 @@ def main():
                 return pos
         raise ValueError(f"Symbol {symbol} not found")
 
-    def get_neighbors(pos: Position):
-        return (
-            next for dir in [UP, DOWN, LEFT, RIGHT] if get(next := add(pos, dir)) != "#"
-        )
-
     def dijkstra(start: Position, end: Position):
         (xs, ys) = start
         (xe, ye) = end
-        shortest_paths: list[list[int]] = [
-            [x_size * y_size * 1000] * y_size for _ in range(x_size)
+        infinity = x_size * y_size * 1000
+        shortest_paths = [
+            [[infinity] * len(directions) for _ in range(y_size)] for _ in range(x_size)
         ]
-        visited: list[list[bool]] = [[False] * y_size for _ in range(x_size)]
-        queue = []
-        shortest_paths[xs][ys] = 0
-        heappush(queue, (0, start))
-        while queue:
-            _, (x, y) = heappop(queue)
-            if visited[x][y]:
-                continue
-            visited[x][y] = True
+        visited = [
+            [[False] * len(directions) for _ in range(y_size)] for _ in range(x_size)
+        ]
 
-            for xn, yn in get_neighbors((x, y)):
-                shortest_paths[xn][yn] = min(
-                    int(shortest_paths[x][y] + 1),
-                    int(shortest_paths[xn][yn]),
+        queue = []
+        shortest_paths[xs][ys][directions[RIGHT]] = 0
+        heappush(queue, (0, (start, RIGHT)))
+        while queue:
+            _, ((x, y), dir) = heappop(queue)
+            if visited[x][y][directions[dir]]:
+                continue
+            visited[x][y][directions[dir]] = True
+
+            if in_bounds(next := add((x, y), dir)) and get(next) != "#":
+                xn, yn = next
+                shortest_paths[xn][yn][directions[dir]] = min(
+                    int(shortest_paths[x][y][directions[dir]] + 1),
+                    int(shortest_paths[xn][yn][directions[dir]]),
                 )
-                if not visited[xn][yn]:
-                    heappush(queue, (shortest_paths[xn][yn], (xn, yn)))
+                if not visited[xn][yn][directions[dir]]:
+                    heappush(
+                        queue,
+                        (shortest_paths[xn][yn][directions[dir]], ((xn, yn), dir)),
+                    )
+
+            for dir_n in directions.keys():
+                shortest_paths[x][y][directions[dir_n]] = min(
+                    int(shortest_paths[x][y][directions[dir]] + 1000),
+                    int(shortest_paths[x][y][directions[dir_n]]),
+                )
+                if not visited[x][y][directions[dir_n]]:
+                    heappush(
+                        queue,
+                        (shortest_paths[x][y][directions[dir_n]], ((x, y), dir_n)),
+                    )
+
         return shortest_paths[xe][ye]
 
-    grid = read_input("sample.txt")
+    # grid = read_input("sample.txt")
+    grid = read_input("input.txt")
 
     x_size = len(grid)
     y_size = len(grid[0])
@@ -82,7 +101,7 @@ def main():
 
     debug(grid)
     shortest_path = dijkstra(start, end)
-    print(shortest_path)
+    print(min(shortest_path))
 
 
 if __name__ == "__main__":
