@@ -20,11 +20,11 @@ def init_grid(val, x_size, y_size):
 
 
 @cache
-def can_design(patterns: tuple[str], design: str) -> int:
+def count_designs(patterns: tuple[str], design: str) -> int:
     if design == "":
         return 1
     return sum(
-        can_design(patterns, design[len(pattern) :])
+        count_designs(patterns, design[len(pattern) :])
         for pattern in patterns
         if design.startswith(pattern)
     )
@@ -33,7 +33,7 @@ def can_design(patterns: tuple[str], design: str) -> int:
 def main():
     # patterns, designs = read_input("sample.txt")
     patterns, designs = read_input("input.txt")
-    print(sum(can_design(patterns, design) for design in designs))
+    print(sum(count_designs(patterns, design) for design in designs))
 
 
 if __name__ == "__main__":
