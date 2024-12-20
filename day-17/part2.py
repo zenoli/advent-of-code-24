@@ -1,5 +1,5 @@
+import sys
 from dataclasses import dataclass
-from functools import cache
 from collections import defaultdict
 
 
@@ -112,21 +112,21 @@ def main():
             out=state.out,
         )
 
+    def dec(oct: int):
+        return int(str(oct), 8)
+
     def step(state: State) -> State:
         opcode = program[state.ip]
         operand = program[state.ip + 1]
-        return instructions[opcode](operand, state)
+        res = instructions[opcode](operand, state)
+        print(f"A = {oct(res.A)}, B = {oct(res.B)}, C = {oct(res.C)}")
+        return res
 
     def run(state: State) -> State:
         N = len(program)
         while state.ip < N:
             state = step(state)
         return state
-
-    # registers, program = read_input("sample.txt")
-    # registers, program = read_input("sample-part2.txt")
-    registers, program = read_input("input.txt")
-    A, B, C = registers
 
     instructions = {
         0: adv,
@@ -138,49 +138,38 @@ def main():
         6: bdv,
         7: cdv,
     }
+    # registers, program = read_input("sample.txt")
+    # registers, program = read_input("sample-part2.txt")
+    registers, program = read_input("input.txt")
+    A, B, C = registers
 
     d = defaultdict(int)
-    N = 112210000000000
-    # for A in range(1000):
-    #     state = State(A, B, C)
-    #     out_state = run(state)
-    #     d[len(out_state.out) // 2] += 1
-    #     prg_out = "," + ",".join(map(str, program))
-    #     # print("P", out_state.out)
-    #     # print("O", prg_out)
-    #     # print(A, A % 8, out_state.out)
-    #     print(out_state)
-    #     if prg_out == out_state.out:
-    #         print("Found:", A)
-    #         return
-    # print(d)
+    N = 1000
+    A = 1
 
-    count = 0
-    limit = 100
-
-    # A = 1
-    # while count < 10:
-    #     out_state = run(State(A+2, B, C))
+    # for A in range(dec(7777)):
+    #     out_state = run(State(A, 0, 0))
+    #     d = int(out_state.out.replace(",", ""))
     #     print(out_state.out)
-    #     A *= 8
-    #     count += 1
-
-    # for i in range(8):
-    #     program = [5, 6]
-    #     out_state = run(State(i, i, i))
-    #     print(out_state.out)
-    #     assert int(out_state.out[1]) == i
-    # program = [0, 3, 5, 4, 3, 0]
-
+    A_oct = int(sys.argv[1])
+    A_dec = dec(A_oct)
+    print(A_oct, A_dec)
+    state = State(A_dec, B, C)
+    out_state = run(state)
     prg_out = "," + ",".join(map(str, program))
-    for A in range(56 * 7**14, 56 * 7**16):
-        out_state = run(State(A, 0, 0))
-        print(out_state.out)
-        print(prg_out)
-        if out_state.out == prg_out:
-            return
+    print("OUT", out_state.out)
+    print("PRG", prg_out)
 
-    # print("," + ",".join(map(str, program)))
+    # print(A_oct)
+    # d[len(out_state.out) // 2] += 1
+    # print("P", out_state.out)
+    # print("O", prg_out)
+    # print(A, A % 8, out_state.out)
+    # print("1" + i * "0", out_state.out)
+    # if prg_out == out_state.out:
+    #     print("Found:", A)
+    #     return
+    # A *= 8
 
 
 if __name__ == "__main__":
