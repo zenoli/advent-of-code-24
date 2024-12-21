@@ -1,4 +1,5 @@
-from itertools import product
+from collections import Counter
+from itertools import product, chain
 from typing import Iterable
 
 
@@ -50,35 +51,53 @@ def main():
         raise ValueError(f"Symbol {symbol} not found")
 
     def get_neighbors(pos: Position) -> Iterable[Position]:
-        return (
-            add(pos, dir) for dir in DIRECTIONS if in_bounds(neighbor := add(pos, dir))
-        )
+        return (neighbor for dir in DIRECTIONS if in_bounds(neighbor := add(pos, dir)))
 
     def race(start, end):
-        def get_next(pos: Position) -> Position:
+        def get_next(pos: Position):
             for neighbor in get_neighbors(pos):
-                if get_val(neighbor) != "#" and neighbor not in steps:
+                if get_val(neighbor) != "#" and neighbor not in times:
                     return neighbor
+            raise ValueError(f"No next position found from {pos}.")
 
-        steps = {}
+        times = {}
         count = 0
 
-        steps[start] = 0
+        times[start] = 0
         pos = start
         while pos != end:
-            steps[pos] = (count := count + 1)
+            times[pos] = count
+            count += 1
             pos = get_next(pos)
-        print(steps)
+        times[pos] = count
+        return times
 
-    grid = read_input("sample.txt")
+    def compute_time_saved(pos: Position, times: dict[Position, int]):
+        for dir in DIRECTIONS:
+            next1 = add(pos, dir)
+            if not in_bounds(next1) or get_val(next1) != "#":
+                continue
+            next2 = add(next1, dir)
+            if not in_bounds(next2) or get_val(next2) == "#":
+                continue
+            next = next2
+            if next in times:
+                time_saved = times[next] - (times[pos] + 2)
+                if time_saved > 0:
+                    yield time_saved
+
+    # grid = read_input("sample.txt")
+    grid = read_input("input.txt")
     x_size = len(grid)
     y_size = len(grid[0])
 
-    debug(grid)
     start = find("S")
     end = find("E")
 
-    race(start, end)
+    times = race(start, end)
+    cheats = chain.from_iterable(compute_time_saved(pos, times) for pos in times)
+    result = sum(time_saved >= 100 for time_saved in cheats)
+    print(result)
 
 
 if __name__ == "__main__":
