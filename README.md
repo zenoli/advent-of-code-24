@@ -23,7 +23,7 @@ My attempt at aoc 24.
 - [ ] day 17
 - [x] day 18
 - [x] day 19
-- [ ] day 20
+- [x] day 20
 - [ ] day 21
 - [ ] day 22
 - [ ] day 23
