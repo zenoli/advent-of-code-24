@@ -112,6 +112,44 @@ def main():
             out=state.out,
         )
 
+    def input_program(A_in: int):
+        def combo(x):
+            if x <= 3:
+                return x
+            if x == 4:
+                return A
+            if x == 5:
+                return B
+            if x == 6:
+                return C
+            else:
+                raise ValueError(f"{x} is not a valid combo operand.")
+
+        out = []
+
+        A = A_in
+        B = 0
+        C = 0
+
+        while True:
+            # 2,4: bst(4)
+            B = A % 8
+            # 1,5: bxl(5)
+            B = B ^ 0b101
+            # 7,5: cdv(5)
+            C = A // (1 << B)
+            # 1,6: bxl(6)
+            B = B ^ 0b110
+            # 4,3: bxc()
+            B = B ^ C
+            # 5,5: out(5)
+            out += str(B % 8)
+            # 0,3: adv(3)
+            A = A // 8
+            # 3,0
+            if A == 0:
+                return out
+
     def dec(oct: int):
         return int(str(oct), 8)
 
@@ -119,7 +157,8 @@ def main():
         opcode = program[state.ip]
         operand = program[state.ip + 1]
         res = instructions[opcode](operand, state)
-        print(f"A = {oct(res.A)}, B = {oct(res.B)}, C = {oct(res.C)}")
+        # print(f"A = {bin(res.A)}, B = {bin(res.B)}, C = {bin(res.C)}")
+        # print(f"A = {oct(res.A)}, B = {oct(res.B)}, C = {oct(res.C)}")
         return res
 
     def run(state: State) -> State:
@@ -153,11 +192,12 @@ def main():
     #     print(out_state.out)
     A_oct = int(sys.argv[1])
     A_dec = dec(A_oct)
-    print(A_oct, A_dec)
+    print("NEW", ",".join(input_program(A_dec)))
+    # print(A_oct, A_dec)
     state = State(A_dec, B, C)
     out_state = run(state)
-    prg_out = "," + ",".join(map(str, program))
-    print("OUT", out_state.out)
+    prg_out = ",".join(map(str, program))
+    print("OUT", out_state.out[1:])
     print("PRG", prg_out)
 
     # print(A_oct)
