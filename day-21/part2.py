@@ -1,7 +1,7 @@
 from functools import cache
 from collections import defaultdict
 from heapq import heappop, heappush
-from itertools import pairwise, product
+from itertools import pairwise
 
 type Graph = dict[str, list[tuple[str, str]]]
 type PredecessorMap = Graph
@@ -77,33 +77,22 @@ def get_all_shortest_paths(start: str, end: str, graph: Graph) -> list[str]:
     return [p + "A" for p in construct_shortest_paths(end, pred)]
 
 
-def combine(xss: list[list[str]]) -> list[str]:
-    if len(xss) == 1:
-        return xss[0]
-
-    xs, *xss = xss
-    ys = combine(xss)
-    return [x + y for x, y in product(xs, ys)]
-
-
-def get_shortest_seq(seqs: list[str]):
-    return min(zip(map(len, seqs), seqs))[1]
-
-
-def get_sequence(seq: str, graph: Graph, level: int):
-    shortest_paths_list = [
-        get_all_shortest_paths(start, end, graph) for start, end in pairwise("A" + seq)
-    ]
-
-    combined_shortest_paths = combine(shortest_paths_list)
+@cache
+def sp(start: str, end: str, level: int) -> int:
+    graph = numpad_graph if {start, end} & set("0123456789") else keypad_graph
+    all_sps = get_all_shortest_paths(start, end, graph)
     if level == 0:
-        return combined_shortest_paths[0]
-    seqs = []
-    for combined_shortest_path in combined_shortest_paths:
-        seqs.append(get_sequence(combined_shortest_path, keypad_graph, level - 1))
+        return len(all_sps[0])
 
-    shortest_seq = get_shortest_seq(seqs)
-    return shortest_seq
+    return min(seq_len(sp, level) for sp in all_sps)
+
+
+@cache
+def seq_len(seq: str, level: int) -> int:
+    if level == 0:
+        return len(seq)
+
+    return sum(sp(s, e, level - 1) for s, e in pairwise("A" + seq))
 
 
 def main():
@@ -111,10 +100,10 @@ def main():
     codes = read_input("input.txt")
     result = 0
     for code in codes:
-        seq = get_sequence(code, numpad_graph, level=2)
         num = int(code[:-1])
-        print(f"{len(seq)} * {num}")
-        result += num * len(seq)
+        res = seq_len(code, level=26)
+        print(f"{res} * {num}")
+        result += res * num
 
     print(result)
 
