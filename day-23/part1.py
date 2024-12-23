@@ -14,6 +14,8 @@ def main():
     nodes = set()
     for e in edges:
         nodes |= set(e)
+    
+    print(">>>", len(nodes))
 
     nodes_t = {v for v in nodes if v.startswith("t")}
 
