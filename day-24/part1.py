@@ -11,7 +11,10 @@ class Op(StrEnum):
     AND = auto()
 
 
+@dataclass
 class Evaluable(ABC):
+    name: str
+
     @abstractmethod
     def eval(self) -> bool:
         pass
@@ -19,7 +22,6 @@ class Evaluable(ABC):
 
 @dataclass
 class Wire(Evaluable):
-    name: str
     state: bool
 
     def eval(self):
@@ -64,15 +66,29 @@ def read_input(filename: str):
     return inputs, gates
 
 
+def to_number(outputs: list[bool]):
+    return int("".join(str(int(b)) for b in outputs), 2)
+
+
 def main():
-    inputs, gates = read_input("sample.txt")
-    # inputs, gates = read_input("input.txt")
+    def init(name: str):
+        if name[0] in "xy":
+            return Wire(name=name, state=bool(inputs[name]))
+        wire1, op, wire2 = gates[name]
+        return Gate(
+            name=name,
+            wire1=init(wire1),
+            wire2=init(wire2),
+            op=Op(op.lower()),
+        )
 
-    for x in inputs.items():
-        print(x)
+    # inputs, gates = read_input("sample.txt")
+    inputs, gates = read_input("input.txt")
 
-    for x in gates.items():
-        print(x)
+    outputs = list(reversed(sorted(name for name in gates if name.startswith("z"))))
+    out_gates = [init(output) for output in outputs]
+    result = [o.eval() for o in out_gates]
+    print(to_number(result))
 
 
 if __name__ == "__main__":
