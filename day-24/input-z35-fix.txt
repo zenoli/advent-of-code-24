@@ -153,7 +153,7 @@ y07 XOR x07 -> bks
 cgv XOR cmg -> z27
 vfb XOR bqb -> z21
 x19 AND y19 -> qhh
-y35 XOR x35 -> vdk
+y35 XOR x35 -> mmf
 y33 XOR x33 -> wrp
 y10 AND x10 -> kks
 trn OR vft -> gdn
@@ -183,7 +183,7 @@ rrp XOR qqc -> z17
 cbq XOR fqm -> z32
 qmd AND fnh -> vkf
 y22 XOR x22 -> jfm
-x35 AND y35 -> mmf
+x35 AND y35 -> vdk
 sjd XOR qjg -> z34
 bsj XOR ccs -> z36
 tnp AND ktg -> dss
