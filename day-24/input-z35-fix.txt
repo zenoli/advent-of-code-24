@@ -125,7 +125,7 @@ y12 XOR x12 -> gcm
 y16 AND x16 -> dnw
 x07 AND y07 -> djw
 kbc AND nkm -> dvh
-vrn XOR dkr -> z10
+vrn XOR dkr -> kmb
 fbs OR wcf -> pkm
 x12 AND y12 -> vrv
 x34 AND y34 -> gbs
@@ -224,7 +224,7 @@ y28 XOR x28 -> hqr
 x44 XOR y44 -> bhg
 wpw XOR ppn -> z29
 y39 XOR x39 -> wsm
-vrn AND dkr -> kmb
+vrn AND dkr -> z10
 psh OR qrc -> dkr
 rrs AND dwm -> dth
 hcq XOR qrh -> z23
